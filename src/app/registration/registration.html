@@ -1,0 +1,255 @@
+<div class="registration-container">
+  <div class="container-fluid h-100">
+    <div class="row min-vh-100">
+      <!-- Left side - Brand -->
+      <div class="col-lg-5 col-md-5 d-none d-md-flex align-items-center justify-content-center brand-column">
+        <div class="brand-section text-center">
+          <h1 class="connecto-brand">Connecto</h1>
+          <p class="connecto-tagline">Weaving the world together</p>
+          <div class="brand-description mt-4">
+            <p class="text-white-50">Join millions of people connecting and sharing moments that matter.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right side - Registration Form -->
+      <div class="col-lg-7 col-md-7 col-12 d-flex align-items-start justify-content-center form-column" style="margin-left: auto;">
+        <div class="registration-card">
+          <!-- Mobile brand -->
+          <div class="d-block d-md-none text-center mb-4">
+            <h1 class="connecto-brand mb-2">Connecto</h1>
+            <p class="connecto-tagline">Weaving the world together</p>
+          </div>
+          
+          <h2 class="form-title mb-4">Create a new account</h2>
+          
+          <form [formGroup]="registrationForm" (ngSubmit)="onRegister()" class="registration-form">
+            <!-- Name Fields -->
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [class.is-invalid]="isFieldInvalid('firstName')"
+                  formControlName="firstName"
+                  placeholder="First name"
+                  autocomplete="given-name"
+                >
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('firstName')">
+                  <div *ngIf="registrationForm.get('firstName')?.errors?.['required']">
+                    Please provide a valid first name
+                  </div>
+                  <div *ngIf="registrationForm.get('firstName')?.errors?.['pattern']">
+                    First name should contain only letters
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <input 
+                  type="text" 
+                  class="form-control"
+                  [class.is-invalid]="isFieldInvalid('surname')"
+                  formControlName="surname"
+                  placeholder="Surname"
+                  autocomplete="family-name"
+                >
+                <div class="invalid-feedback" *ngIf="isFieldInvalid('surname')">
+                  <div *ngIf="registrationForm.get('surname')?.errors?.['required']">
+                    Please provide a valid surname
+                  </div>
+                  <div *ngIf="registrationForm.get('surname')?.errors?.['pattern']">
+                    Surname should contain only letters
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Date of Birth -->
+            <div class="mb-3">
+              <label class="form-label text-muted">Date of birth</label>
+              <div class="date-selects">
+                <select 
+                  class="form-select" 
+                  [class.is-invalid]="isFieldInvalid('day')"
+                  formControlName="day"
+                >
+                  <option value="">Day</option>
+                  <option *ngFor="let day of days" [value]="day">{{ day }}</option>
+                </select>
+                <select 
+                  class="form-select"
+                  [class.is-invalid]="isFieldInvalid('month')"
+                  formControlName="month"
+                >
+                  <option value="">Month</option>
+                  <option *ngFor="let month of months; let i = index" [value]="i + 1">{{ month }}</option>
+                </select>
+                <select 
+                  class="form-select"
+                  [class.is-invalid]="isFieldInvalid('year')"
+                  formControlName="year"
+                >
+                  <option value="">Year</option>
+                  <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+                </select>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="dateOfBirthError">
+                {{ dateOfBirthError }}
+              </div>
+            </div>
+            
+            <!-- Gender -->
+            <div class="mb-3">
+              <label class="form-label text-muted">Gender</label>
+              <div class="gender-options">
+                <div class="gender-option">
+                  <input 
+                    type="radio" 
+                    class="form-check-input" 
+                    id="female"
+                    formControlName="gender"
+                    value="Female"
+                  >
+                  <label class="form-check-label" for="female">Female</label>
+                </div>
+                <div class="gender-option">
+                  <input 
+                    type="radio" 
+                    class="form-check-input" 
+                    id="male"
+                    formControlName="gender"
+                    value="Male"
+                  >
+                  <label class="form-check-label" for="male">Male</label>
+                </div>
+                <div class="gender-option">
+                  <input 
+                    type="radio" 
+                    class="form-check-input" 
+                    id="others"
+                    formControlName="gender"
+                    value="Others"
+                  >
+                  <label class="form-check-label" for="others">Others</label>
+                </div>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="isFieldInvalid('gender')">
+                Please provide a valid gender
+              </div>
+            </div>
+            
+            <!-- Mobile Number -->
+            <div class="mb-3">
+              <input 
+                type="tel" 
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('mobileNumber')"
+                formControlName="mobileNumber"
+                placeholder="Mobile number"
+                autocomplete="tel"
+              >
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('mobileNumber')">
+                <div *ngIf="registrationForm.get('mobileNumber')?.errors?.['required']">
+                  Please provide a valid mobile number
+                </div>
+                <div *ngIf="registrationForm.get('mobileNumber')?.errors?.['pattern']">
+                  Mobile number should be 10 digits
+                </div>
+              </div>
+            </div>
+            
+            <!-- Email Address -->
+            <div class="mb-3">
+              <input 
+                type="email" 
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('email')"
+                formControlName="email"
+                placeholder="Email address"
+                autocomplete="email"
+              >
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('email')">
+                <div *ngIf="registrationForm.get('email')?.errors?.['required']">
+                  Please provide a valid email
+                </div>
+                <div *ngIf="registrationForm.get('email')?.errors?.['email'] || registrationForm.get('email')?.errors?.['pattern']">
+                  Please enter a valid email address
+                </div>
+              </div>
+            </div>
+            
+            <!-- Password -->
+            <div class="mb-3">
+              <input 
+                type="password" 
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('password')"
+                formControlName="password"
+                placeholder="New password"
+                autocomplete="new-password"
+              >
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('password')">
+                <div *ngIf="registrationForm.get('password')?.errors?.['required']">
+                  Please provide a valid password
+                </div>
+                <div *ngIf="registrationForm.get('password')?.errors?.['pattern']">
+                  Password must contain at least 8 characters with uppercase, lowercase, digit, and special character
+                </div>
+                <div *ngIf="registrationForm.get('password')?.errors?.['minlength'] || registrationForm.get('password')?.errors?.['maxlength']">
+                  Password must be between 8 and 16 characters
+                </div>
+              </div>
+            </div>
+            
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <input 
+                type="password" 
+                class="form-control"
+                [class.is-invalid]="isFieldInvalid('confirmPassword') || passwordMismatch"
+                formControlName="confirmPassword"
+                placeholder="Confirm password"
+                autocomplete="new-password"
+              >
+              <div class="invalid-feedback" *ngIf="isFieldInvalid('confirmPassword')">
+                <div *ngIf="registrationForm.get('confirmPassword')?.errors?.['required']">
+                  Please confirm your password
+                </div>
+              </div>
+              <div class="invalid-feedback d-block" *ngIf="passwordMismatch">
+                Passwords do not match
+              </div>
+            </div>
+            
+            <!-- Error message -->
+            <div class="alert alert-danger" *ngIf="registrationError">
+              {{ registrationError }}
+            </div>
+            
+            <button 
+              type="submit" 
+              class="btn btn-create-account"
+              [disabled]="registrationForm.invalid || passwordMismatch || isLoading"
+            >
+              <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+              Sign Up
+            </button>
+            
+            <div class="text-center mt-3">
+              <a href="#" class="text-decoration-none text-primary" (click)="goToLogin($event)">
+                Already have an account?
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation Modal -->
+<app-confirmation-modal 
+  *ngIf="showConfirmationModal"
+  [mobileNumber]="registeredMobileNumber"
+  (onClose)="onConfirmationClose()"
+></app-confirmation-modal>
